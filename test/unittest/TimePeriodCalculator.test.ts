@@ -107,7 +107,7 @@ describe('TimePeriodCalculator', () => {
             const result = testObject.convertToDisplayString(input);
 
             // Assert
-            expect(result).toBe(expected);
+            expect(result).toBe(2);
         });
 
         it('should only consist of "ms".', () => {
