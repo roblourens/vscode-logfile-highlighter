@@ -1,5 +1,6 @@
 'use strict';
 
+import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Position, Selection } from 'vscode';
@@ -14,9 +15,22 @@ describe('TimePeriodController', () => {
         console.log('beforeEach');
         const testRunFolderAbsolute = path.join(process.cwd(), '.vscode-test');
         console.log(testRunFolderAbsolute);
-        const readdir = fs.readdirSync(path.join(testRunFolderAbsolute,
-                'VSCode-linux-x64/resources/app/node_modules.asar.unpacked/vscode-ripgrep/bin'));
+        const binPath = path.join(testRunFolderAbsolute,
+            'VSCode-linux-x64/resources/app/node_modules.asar.unpacked/vscode-ripgrep/bin');
+        const readdir = fs.readdirSync(binPath);
         console.log(JSON.stringify(readdir));
+
+        const rgPath = path.join(binPath, 'rg');
+        const result = cp.execSync('ls -l ' + rgPath);
+        console.log(result.toString());
+
+        try {
+            fs.accessSync(rgPath);
+            console.log(`access passed`);
+        } catch (e) {
+            console.log(`access failed`);
+            console.log(e.message);
+        }
 
         // if (vscode.workspace.workspaceFolders !== undefined) {
         //     const workspaceRootPath = vscode.workspace.workspaceFolders[0].uri.path;
