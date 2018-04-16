@@ -16,7 +16,7 @@
 		"url": "https://github.com/emilast/vscode-logfile-highlighter.git"
 	},
 	"engines": {
-		"vscode": "^1.15.0"
+		"vscode": "^1.22.0"
 	},
 	"publisher": "emilast",
 	"main": "./out/src/extension",
