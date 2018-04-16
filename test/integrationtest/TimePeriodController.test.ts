@@ -1,5 +1,7 @@
 'use strict';
 
+import * as fs from 'fs';
+import * as path from 'path';
 import { Position, Selection } from 'vscode';
 import * as vscode from 'vscode';
 import TimePeriodController = require('../../src/TimePeriodController');
@@ -9,31 +11,38 @@ describe('TimePeriodController', () => {
     // Initial situation for all tests:
     // folder 'testLogs' is opened and first file is selected in editor.
     beforeEach((done) => {
-        if (vscode.workspace.workspaceFolders !== undefined) {
-            const workspaceRootPath = vscode.workspace.workspaceFolders[0].uri.path;
-            vscode.workspace.findFiles('*.log').then(
-                (uris) => {
-                    vscode.workspace.openTextDocument(uris[0]).then(
-                        (file) => {
-                            vscode.window.showTextDocument(file).then(
-                                (editor) => {
-                                    editor.selection = new Selection(new Position(0, 0), new Position(0, 0));
-                                    done();
-                                },
-                                (reason) => {
-                                    done.fail(reason);
-                                });
-                        },
-                        (reason) => {
-                            done.fail(reason);
-                        });
-                },
-                (reason) => {
-                    done.fail(reason);
-                });
-        } else {
-            done.fail('No folder was opened!');
-        }
+        console.log('beforeEach');
+        const testRunFolderAbsolute = path.join(process.cwd(), '.vscode-test');
+        console.log(testRunFolderAbsolute);
+        const readdir = fs.readdirSync(path.join(testRunFolderAbsolute,
+                'VSCode-linux-x64/resources/app/node_modules.asar.unpacked/vscode-ripgrep/bin'));
+        console.log(JSON.stringify(readdir));
+
+        // if (vscode.workspace.workspaceFolders !== undefined) {
+        //     const workspaceRootPath = vscode.workspace.workspaceFolders[0].uri.path;
+        //     vscode.workspace.findFiles('*.log').then(
+        //         (uris) => {
+        //             vscode.workspace.openTextDocument(uris[0]).then(
+        //                 (file) => {
+        //                     vscode.window.showTextDocument(file).then(
+        //                         (editor) => {
+        //                             editor.selection = new Selection(new Position(0, 0), new Position(0, 0));
+        //                             done();
+        //                         },
+        //                         (reason) => {
+        //                             done.fail(reason);
+        //                         });
+        //                 },
+        //                 (reason) => {
+        //                     done.fail(reason);
+        //                 });
+        //         },
+        //         (reason) => {
+        //             done.fail(reason);
+        //         });
+        // } else {
+        //     done.fail('No folder was opened!');
+        // }
     });
 
     it('should show a status bar item when a range of valid log statements is selcted.', (done) => {
